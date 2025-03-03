@@ -122,23 +122,29 @@ def evaluate_performance(game):
     black_score = 0
     total_score = 0
 
+    #Initialize board
+    board = game.board()
+
     # Iterate through all moves in the game
     for move in game.mainline_moves():
-        board = game.board()
-        board.push(move)
+        # Check if the move is legal
+        if board.is_legal(move):
+            board.push(move)  # Apply the legal move
 
-        # Evaluate the material and position after the move
-        white_material, black_material = evaluate_material(board)
-        white_position, black_position = evaluate_position(board)
+            # Evaluate the material and position after the move
+            white_material, black_material = evaluate_material(board)
+            white_position, black_position = evaluate_position(board)
 
-        # Combine material and positional evaluations
-        white_move_score = white_material + white_position
-        black_move_score = black_material + black_position
+            # Combine material and positional evaluations
+            white_move_score = white_material + white_position
+            black_move_score = black_material + black_position
 
-        # Update cumulative scores
-        white_score += white_move_score
-        black_score += black_move_score
-        total_score = white_score + black_score
+            # Update cumulative scores
+            white_score += white_move_score
+            black_score += black_move_score
+            total_score = white_score + black_score
+        else:
+            print(f"Illegal move encountered: {move}, skipping.")
 
     # Get a percentage at the end of the game
     if total_score == 0:
